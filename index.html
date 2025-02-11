@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>100-Day Countdown</title>
+  <style>
+    /* Basic reset and styling */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #222;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    #countdown {
+      font-size: 3em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Countdown Timer</h1>
+  <div id="countdown"></div>
+
+  <script>
+    // Calculate the target date: 100 days from now
+    const now = new Date();
+    // Using getTime() to work in milliseconds
+    const targetDate = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
+
+    // Reference to the countdown display element
+    const countdownElement = document.getElementById("countdown");
+
+    // Update the countdown every second
+    const timer = setInterval(() => {
+      const currentTime = new Date().getTime();
+      const distance = targetDate - currentTime;
+
+      // Calculate days, hours, minutes, and seconds
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Display the countdown timer
+      countdownElement.innerHTML = `
+        ${days}d ${hours}h ${minutes}m ${seconds}s
+      `;
+
+      // If the countdown is over, clear the timer and display a message
+      if (distance < 0) {
+        clearInterval(timer);
+        countdownElement.innerHTML = "EXPIRED";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
