@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>100-Day Countdown</title>
+  <title>Horta Countdown</title>
   <style>
     /* Basic reset and styling */
     body {
@@ -24,6 +24,44 @@
     #countdown {
       font-size: 3em;
       text-align: center;
+      margin-bottom: 30px;
+    }
+    /* Animated image styling */
+    #animatedImage {
+      width: 200px;
+      height: 200px;
+      /* Adjust size as needed */
+      margin-bottom: 30px;
+      animation: rotateImage 5s linear infinite;
+    }
+    @keyframes rotateImage {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    /* Progress bar container */
+    #progressContainer {
+      width: 80%;
+      max-width: 600px;
+      background-color: #555;
+      border-radius: 10px;
+      margin: 20px auto;
+      height: 30px;
+      overflow: hidden;
+    }
+    /* Progress bar fill */
+    #progressBar {
+      height: 100%;
+      width: 0;
+      background-color: #4caf50;
+      border-radius: 10px 0 0 10px;
+      text-align: center;
+      line-height: 30px;
+      color: white;
+      transition: width 1s ease-in-out;
     }
   </style>
 </head>
@@ -31,35 +69,58 @@
   <h1>Countdown Timer</h1>
   <div id="countdown"></div>
 
+  <!-- Animated Image -->
+  <img
+    id="animatedImage"
+    src="./horota.png"
+    alt="Animated"
+  />
+
+  <!-- Progress Bar -->
+  <div id="progressContainer">
+    <div id="progressBar">0%</div>
+  </div>
+
   <script>
+    // Set the countdown duration (100 days in milliseconds)
+    const totalDuration = 100 * 24 * 60 * 60 * 1000;
+
     // Calculate the target date: 100 days from now
     const now = new Date();
-    // Using getTime() to work in milliseconds
-    const targetDate = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
+    const targetDate = new Date(now.getTime() + totalDuration);
 
-    // Reference to the countdown display element
+    // References to DOM elements
     const countdownElement = document.getElementById("countdown");
+    const progressBarElement = document.getElementById("progressBar");
 
-    // Update the countdown every second
+    // Update the countdown and progress bar every second
     const timer = setInterval(() => {
       const currentTime = new Date().getTime();
       const distance = targetDate - currentTime;
 
-      // Calculate days, hours, minutes, and seconds
+      // Calculate days, hours, minutes, and seconds remaining
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       // Display the countdown timer
-      countdownElement.innerHTML = `
-        ${days}d ${hours}h ${minutes}m ${seconds}s
-      `;
+      countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-      // If the countdown is over, clear the timer and display a message
+      // Calculate progress percentage based on elapsed time
+      const progressPercent = Math.min(
+        100,
+        ((totalDuration - distance) / totalDuration) * 100
+      ).toFixed(2);
+      progressBarElement.style.width = `${progressPercent}%`;
+      progressBarElement.textContent = `${progressPercent}%`;
+
+      // If the countdown is over, clear the timer and update the display
       if (distance < 0) {
         clearInterval(timer);
         countdownElement.innerHTML = "EXPIRED";
+        progressBarElement.style.width = "100%";
+        progressBarElement.textContent = "100%";
       }
     }, 1000);
   </script>
