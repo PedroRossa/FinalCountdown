@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Countdown to May 22, 2025 - Horota Countdown</title>
+  <title>Countdown to May 22, 2025 - HOROTA COUNTDOWN</title>
   <style>
     /* Particles container fills the entire background */
     #particles-js {
@@ -39,15 +39,15 @@
     }
     /* Animated image styling */
     #animatedImage {
-      width: 600px;
-      height: 800px;
+      width: 300px;
+      height: 400px;
       margin-bottom: 30px;
       animation: rotateImage 5s linear infinite;
       z-index: 1;
     }
     @keyframes rotateImage {
       from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      to   { transform: rotate(360deg); }
     }
     /* Progress bar container */
     #progressContainer {
@@ -81,7 +81,7 @@
   <!-- Particles Background -->
   <div id="particles-js"></div>
 
-  <h1>Countdown to May 22, 2025 - Horota Countdown</h1>
+  <h1>Countdown to May 22, 2025 - HOROTA COUNTDOWN</h1>
   <div id="countdown"></div>
 
   <!-- Animated Image -->
@@ -93,7 +93,7 @@
   </div>
 
   <!-- Audio Element: The Final Countdown -->
-  <audio id="backgroundMusic" autoplay loop>
+  <audio id="backgroundMusic" autoplay loop muted>
     <source src="./audio.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
   </audio>
@@ -101,7 +101,7 @@
   <!-- Load particles.js library -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
-    /* Initialize particles.js with a basic configuration */
+    /* Initialize particles.js with changing colors */
     particlesJS("particles-js", {
       "particles": {
         "number": {
@@ -112,7 +112,12 @@
           }
         },
         "color": {
-          "value": "#ffffff"
+          "value": ["#ff0000", "#00ff00", "#0000ff", "#ffff00"],
+          "anim": {
+            "enable": true,
+            "speed": 20,
+            "sync": false
+          }
         },
         "shape": {
           "type": "circle",
@@ -212,9 +217,8 @@
     // Set the target end date: May 22, 2025 (at midnight)
     const targetDate = new Date("May 22, 2025 00:00:00");
 
-    // Define a fixed start date for the progress bar.
-    // Here we assume the progress period starts on May 22, 2024.
-    const startDate = new Date("Feb 11, 2025 00:00:00");
+    // Set the start date as today for the progress bar
+    const startDate = new Date();
 
     // Calculate the total duration (in milliseconds) from the start date to the target date.
     const totalDuration = targetDate.getTime() - startDate.getTime();
@@ -257,6 +261,15 @@
         progressBarElement.textContent = "100%";
       }
     }, 1000);
+
+    // Handle audio playback on user interaction to bypass autoplay restrictions
+    document.body.addEventListener('click', function() {
+      const audio = document.getElementById('backgroundMusic');
+      if(audio.muted) {
+        audio.muted = false;
+        audio.play();
+      }
+    });
   </script>
 </body>
 </html>
