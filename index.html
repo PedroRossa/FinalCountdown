@@ -3,8 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Horta Countdown</title>
+  <title>Countdown to May 22, 2025 - Horota Countdown</title>
   <style>
+    /* Particles container fills the entire background */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
     /* Basic reset and styling */
     body {
       margin: 0;
@@ -15,32 +24,30 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       font-family: Arial, sans-serif;
+      text-align: center;
     }
     h1 {
       margin-bottom: 20px;
+      z-index: 1;
     }
     #countdown {
       font-size: 3em;
-      text-align: center;
       margin-bottom: 30px;
+      z-index: 1;
     }
     /* Animated image styling */
     #animatedImage {
       width: 200px;
       height: 200px;
-      /* Adjust size as needed */
       margin-bottom: 30px;
       animation: rotateImage 5s linear infinite;
+      z-index: 1;
     }
     @keyframes rotateImage {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
     /* Progress bar container */
     #progressContainer {
@@ -51,6 +58,7 @@
       margin: 20px auto;
       height: 30px;
       overflow: hidden;
+      z-index: 1;
     }
     /* Progress bar fill */
     #progressBar {
@@ -63,40 +71,162 @@
       color: white;
       transition: width 1s ease-in-out;
     }
+    /* Hide the audio player (optional) */
+    #backgroundMusic {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <h1>Countdown Timer</h1>
+  <!-- Particles Background -->
+  <div id="particles-js"></div>
+
+  <h1>Countdown to May 22, 2025 - Horota Countdown</h1>
   <div id="countdown"></div>
 
   <!-- Animated Image -->
-  <img
-    id="animatedImage"
-    src="./horota.png"
-    alt="Animated"
-  />
+  <img id="animatedImage" src="./horota.png" alt="Animated Image" />
 
   <!-- Progress Bar -->
   <div id="progressContainer">
     <div id="progressBar">0%</div>
   </div>
 
+  <!-- Audio Element: The Final Countdown -->
+  <audio id="backgroundMusic" autoplay loop>
+    <source src="./audio.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Load particles.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
-    // Set the countdown duration (100 days in milliseconds)
-    const totalDuration = 100 * 24 * 60 * 60 * 1000;
+    /* Initialize particles.js with a basic configuration */
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 80,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": "#ffffff"
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": false,
+          "anim": {
+            "enable": false,
+            "speed": 1,
+            "opacity_min": 0.1,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 3,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 40,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#ffffff",
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 6,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "repulse"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 400,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "bubble": {
+            "distance": 400,
+            "size": 40,
+            "duration": 2,
+            "opacity": 8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 200
+          },
+          "push": {
+            "particles_nb": 4
+          },
+          "remove": {
+            "particles_nb": 2
+          }
+        }
+      },
+      "retina_detect": true
+    });
+  </script>
 
-    // Calculate the target date: 100 days from now
-    const now = new Date();
-    const targetDate = new Date(now.getTime() + totalDuration);
+  <script>
+    // Set the target end date: May 22, 2025 (at midnight)
+    const targetDate = new Date("May 22, 2025 00:00:00");
 
-    // References to DOM elements
+    // Define a fixed start date for the progress bar.
+    // Here we assume the progress period starts on May 22, 2024.
+    const startDate = new Date("May 22, 2024 00:00:00");
+
+    // Calculate the total duration (in milliseconds) from the start date to the target date.
+    const totalDuration = targetDate.getTime() - startDate.getTime();
+
+    // Get references to the DOM elements
     const countdownElement = document.getElementById("countdown");
     const progressBarElement = document.getElementById("progressBar");
 
     // Update the countdown and progress bar every second
     const timer = setInterval(() => {
       const currentTime = new Date().getTime();
-      const distance = targetDate - currentTime;
+      const distance = targetDate.getTime() - currentTime;
 
       // Calculate days, hours, minutes, and seconds remaining
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -107,11 +237,15 @@
       // Display the countdown timer
       countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-      // Calculate progress percentage based on elapsed time
-      const progressPercent = Math.min(
-        100,
-        ((totalDuration - distance) / totalDuration) * 100
-      ).toFixed(2);
+      // Calculate progress percentage based on the time elapsed since the start date
+      let progressPercent;
+      if (currentTime < startDate.getTime()) {
+        progressPercent = 0;
+      } else {
+        progressPercent = ((currentTime - startDate.getTime()) / totalDuration) * 100;
+        if (progressPercent > 100) progressPercent = 100;
+      }
+      progressPercent = progressPercent.toFixed(2);
       progressBarElement.style.width = `${progressPercent}%`;
       progressBarElement.textContent = `${progressPercent}%`;
 
