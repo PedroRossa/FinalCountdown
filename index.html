@@ -216,9 +216,7 @@
   <script>
     // Set the target end date: May 22, 2025 (at midnight)
     const targetDate = new Date("May 22, 2025 00:00:00");
-
-    // Set the start date as today for the progress bar
-    const startDate = new Date();
+    const startDate = new Date("Feb 11, 2025 00:00:00");
 
     // Calculate the total duration (in milliseconds) from the start date to the target date.
     const totalDuration = targetDate.getTime() - startDate.getTime();
